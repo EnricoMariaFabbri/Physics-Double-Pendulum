@@ -8,6 +8,7 @@
 # Other files and folders
 .settings/
 **/.vs/*
+**/.idea/*
 **/.v15/*
 
 # Executables
