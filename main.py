@@ -4,27 +4,64 @@ import math
 import numpy as np
 
 
-beta = float( input ('inserisci il primo angolo in gradi' ))
-gamma = float( input ('inserisci il secondo angolo in gradi' ))
-lunghezza = float( input ('inserisci la lunghezza del primo filo in cm' ))
-lunghezza1 = float( input ('inserisci la lunghezza del secondo filo in cm' ))
+alfa = float( input ('inserisci il primo angolo in gradi' ))
+beta = float( input ('inserisci il secondo angolo in gradi' ))
+lunghezza1 = float( input ('inserisci la lunghezza del primo filo in cm' ))
+lunghezza2 = float( input ('inserisci la lunghezza del secondo filo in cm' ))
+massa1 = float( input ('inserisci la massa del primo filo in kg' ))
+massa2 = float( input ('inserisci la massa del secondo filo in kg' ))
+omega1= float (input('inserisci la prima velocità angolare'))
+omega2= float (input('inserisci la seconda velocità angolare'))
 
-alfa = math.radians(beta)
-latoB = lunghezza * math.sin(alfa)
+
+
+latoB = lunghezza1 * math.sin(alfa)
 posizioneXprimoFilo = 0.0 + latoB
-latoC = lunghezza * math.cos(alfa)
+latoC = lunghezza1 * np.cos(alfa)
 posizioneYprimoFilo = 0.0 - latoC
 
-delta = math.radians(gamma)
-latoD = lunghezza * math.sin(delta)
+
+latoD = lunghezza1 * math.sin(beta)
 posizioneXsecondoFilo =  posizioneXprimoFilo + latoD
-latoE = lunghezza * math.cos(delta)
+latoE = lunghezza1 * math.cos(beta)
 posizioneYsecondoFilo = posizioneYprimoFilo - latoE
 
 x1 = posizioneXprimoFilo
 y1 = posizioneYprimoFilo
 x2 = posizioneXsecondoFilo
 y2 = posizioneYsecondoFilo
+G = 9.18
+
+
+def derivs(state, tempo):
+
+    dydx = np.zeros_like(state)
+    dydx[0] = state[1]
+
+    del_ = state[2] - state[0]
+    den1 = (massa1 + massa2)*lunghezza1 - massa2*lunghezza1*np.cos(del_)*np.cos(del_)
+    dydx[1] = (massa2*lunghezza1*state[1]*state[1]*np.sin(del_)*np.cos(del_) +
+               massa2*G*np.sin(state[2])*np.cos(del_) +
+               massa2*lunghezza2*state[3]*state[3]*np.sin(del_) -
+               (massa1 + massa2)*G*np.sin(state[0]))/den1
+
+    dydx[2] = state[3]
+
+    den2 = (lunghezza2/lunghezza1)*den1
+    dydx[3] = (-massa2*lunghezza2*state[3]*state[3]*np.sin(del_)*np.cos(del_) +
+               (massa1 + massa2)*G*np.sin(state[0])*np.cos(del_) -
+               (massa1 + massa2)*lunghezza1*state[1]*state[1]*np.sin(del_) -
+               (massa1 + massa2)*G*np.sin(state[2]))/den2
+
+    return dydx
+
+
+
+dt = 0.06
+tempo = np.arange(0.0, 20, dt)
+
+state = np.radians([alfa, omega1, beta, omega2])
+
 
 assi = grafico.gca()
 assi.set_xlim([-15,15])
@@ -52,21 +89,12 @@ grafico.gcf().gca().add_artist(palla5)
 palla6 = grafico.Circle((posizioneXsecondoFilo, posizioneYsecondoFilo), 0.3, color='blue',fill=False)
 grafico.gcf().gca().add_artist(palla6)
 
-figura1 = grafico.figure()
-
-def updateLine1 (num, data, line):
-    line.set_data(data[...,:num])
-
-    return line,
-
-
 
 
 plot = grafico.plot([0,x1,x1,x2],[0,y1,y1,y2])
 
+plot.grid()
 
-line_ani = animazioni.FuncAnimation(figura1, updateLine1, 25, fargs=(data, plot),
-                                   interval=50, blit=True)
 
 grafico.show()
 print(math.cos(alfa))
