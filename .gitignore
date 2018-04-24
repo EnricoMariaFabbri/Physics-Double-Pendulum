@@ -2,7 +2,6 @@
 #bin/
 #bin-debug/
 #bin-release/
-#venv/
 [Oo]bj/ # FlashDevelop obj
 [Bb]in/ # FlashDevelop bin
 
@@ -11,6 +10,7 @@
 **/.vs/*
 **/.idea/*
 **/.v15/*
+venv/**
 
 # Executables
 *.swf
