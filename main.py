@@ -33,7 +33,7 @@ y2 = posizioneYsecondoFilo
 G = 9.18
 
 
-def derivs(state, tempo):
+def aggiornaStato(state, tempo):
 
     dydx = np.zeros_like(state)
     dydx[0] = state[1]
