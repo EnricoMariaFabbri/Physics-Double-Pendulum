@@ -6,8 +6,14 @@ from matplotlib.patches import Circle
 """˙z=m2gsinθ2cos(θ1−θ2)−m2sin(θ1−θ2)[l1z21cos(θ1−θ2)+l2z22]−(m1+m2)gsinθ1l1[m1+m2sin2(θ1−θ2)],
 z˙2=(m1+m2)[l1z21sin(θ1−θ2)−gsinθ2+gsinθ1cos(θ1−θ2)]+m2l2z22sin(θ1−θ2)cos(θ1−θ2)l2[m1+m2sin2(θ1−θ2)]"""
 
+id = 0
+while id != 1:
+    teta1 = float(input('inserisci il primo angolo in gradi'))
+    if teta1 < 0:
+        print("inserire angolo positivo")
+    else:
+        id = 1
 
-teta1 = float(input('inserisci il primo angolo in gradi'))
 teta2 = float(input('inserisci il secondo angolo in gradi'))
 lunghezza1 = float(input('inserisci la lunghezza del primo filo in cm'))
 lunghezza2 = float(input('inserisci la lunghezza del secondo filo in cm'))
