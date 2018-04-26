@@ -6,19 +6,60 @@ from matplotlib.patches import Circle
 """˙z=m2gsinθ2cos(θ1−θ2)−m2sin(θ1−θ2)[l1z21cos(θ1−θ2)+l2z22]−(m1+m2)gsinθ1l1[m1+m2sin2(θ1−θ2)],
 z˙2=(m1+m2)[l1z21sin(θ1−θ2)−gsinθ2+gsinθ1cos(θ1−θ2)]+m2l2z22sin(θ1−θ2)cos(θ1−θ2)l2[m1+m2sin2(θ1−θ2)]"""
 
-id = 0
-while id != 1:
+
+contatore3 = 0
+while contatore3 != 1:
     teta1 = float(input('inserisci il primo angolo in gradi'))
     if teta1 < 0:
         print("inserire angolo positivo")
     else:
-        id = 1
+        contatore3 = 1
 
-teta2 = float(input('inserisci il secondo angolo in gradi'))
-lunghezza1 = float(input('inserisci la lunghezza del primo filo in cm'))
-lunghezza2 = float(input('inserisci la lunghezza del secondo filo in cm'))
-massa1 = float(input('inserisci la massa del primo filo in kg'))
-massa2 = float(input('inserisci la massa del secondo filo in kg'))
+
+contatore2 = 0
+while contatore2 != 1:
+    teta2 = float(input('inserisci il secondo angolo in gradi'))
+    if teta2 < 0:
+        print("inserire angolo positivo")
+    else:
+        contatore2 = 1
+
+
+contatore = 0
+while contatore != 1:
+    lunghezza1 = float(input('inserisci il primo filo in centimetri'))
+    if lunghezza1 < 0 or lunghezza1 > 10:
+        print("La lughezza non puo essere negativa ne maggiore di 10")
+    else:
+        contatore = 1
+
+
+contatore1 = 0
+while contatore1 != 1:
+    lunghezza2 = float(input('inserisci il secondo filo in centimetri'))
+    if lunghezza2 < 0 or lunghezza2 > 10:
+        print("La lughezza non puo essere negativa ne maggiore di 10")
+    else:
+        contatore1 = 1
+
+
+print("LA DIFFERENZA TRA LE DUE MASSE NON DEVE SUPERARE I 10 KG ALTRIMENTI NON SI DISTINGUONO PIU I MOVIMENTI DEL PENDOLO")
+
+contatore4 = 0
+while contatore4 != 1:
+    massa1 = float(input('inserisci la massa della prima sfera in chilogrammi'))
+    if massa1 < 0  or massa1 > 100:
+        print("La massa non puo essere negativa ne maggiore di 20 kg")
+    else:
+        contatore4 = 1
+
+contatore5 = 0
+while contatore5 != 1:
+    massa2 = float(input('inserisci la massa della seconda sfera in chilogrammi'))
+    if massa2 < 0 or massa2 > 100 or abs(massa2 - massa1) > 10:
+        print("La massa non puo essere negativa ne maggiore di 20 kg e la differenza tra le due masse non puo essere maggiore di 10 kg")
+    else:
+        contatore5 = 1
 
 g = 9.18
 
