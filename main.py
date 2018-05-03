@@ -78,45 +78,46 @@ def EquazioneDelMoto(PosizioneSistemaAggiornata,tempo, lunghezza1, lunghezza2, m
 
     return teta1primo, z1primo, teta2primo, z2primo
 
-# Maximum time, time point spacings and the time grid (all in s).
+
 tmax, dt = 20, 0.01
 tempo = np.arange(0, tmax+dt, dt)
-# Initial conditions.
 
+
+# condizioni iniziali
 posizioneIniziale = [teta1, 0, teta2, 0]
 
-# Do the numerical integration of the equations of motion
+# integro la mia funzione del moto
 PosizioneSistemaAggiornata = odeint(EquazioneDelMoto, posizioneIniziale, tempo, args=(lunghezza1, lunghezza2, massa1, massa2))
-# Unpack z and theta as a function of time
+
+# aggiorno gli angoli cosi da creare movimento
 teta1, teta2 = PosizioneSistemaAggiornata[:,0], PosizioneSistemaAggiornata[:,2]
 
-# Convert to Cartesian coordinates of the two bob positions.
+# posiziono nel grafico le due sfere
 PosizioneSferaX1 = lunghezza1 * np.sin(teta1)
 PosizioneSferaY1 = -lunghezza1 * np.cos(teta1)
 PosizioneSferaX2 = PosizioneSferaX1 + lunghezza2 * np.sin(teta2)
 PosizioneSferaY2 = PosizioneSferaY1 - lunghezza2 * np.cos(teta2)
 
-# Plotted bob circle radius
+# raggio ella sfera
 r = 0.05
-# Plot a trail of the massa2 bob's position for the last trail_secs seconds.
-trail_secs = 1
-# This corresponds to max_trail time points.
-max_trail = int(trail_secs / dt)
+# Creo la scia del movimento ad ogni secondo
+scia_secs = 1
+# faccio in modo che la scia duri scia_secs/dt
+max_trail = int(scia_secs / dt)
 
-def make_plot(i):
-    # Plot and save an image of the double pendulum configuration for time
-    # point i.
-    # The pendulum rods.
+def disegnaGrafico(i):
+
+    # disegno i due fili
     ax.plot([0, PosizioneSferaX1[i], PosizioneSferaX2[i]], [0, PosizioneSferaY1[i], PosizioneSferaY2[i]], lw=2, c='k')
-    # Circles representing the anchor point of rod 1, and bobs 1 and 2.
-    c0 = Circle((0, 0), r/2, fc='k', zorder=10)
-    c1 = Circle((PosizioneSferaX1[i], PosizioneSferaY1[i]), r, fc='b', ec='b', zorder=10)
-    c2 = Circle((PosizioneSferaX2[i], PosizioneSferaY2[i]), r, fc='r', ec='r', zorder=10)
-    ax.add_patch(c0)
-    ax.add_patch(c1)
-    ax.add_patch(c2)
 
-    # The trail will be divided into ns segments and plotted as a fading line.
+    chiodo = Circle((0, 0), r/2, fc='k', zorder=10)
+    sfera1 = Circle((PosizioneSferaX1[i], PosizioneSferaY1[i]), r, fc='b', ec='b', zorder=10)
+    sfera2 = Circle((PosizioneSferaX2[i], PosizioneSferaY2[i]), r, fc='r', ec='r', zorder=10)
+    ax.add_patch(chiodo)
+    ax.add_patch(sfera1)
+    ax.add_patch(sfera2)
+
+    #
     ns = 20
     s = max_trail // ns
 
@@ -125,13 +126,12 @@ def make_plot(i):
         if imin < 0:
             continue
         imax = imin + s + 1
-        # The fading looks better if we square the fractional length along the
-        # trail.
+        # aggiungo l effetto di schiarimento alla scia
         alpha = (j/ns)**2
         ax.plot(PosizioneSferaX2[imin:imax], PosizioneSferaY2[imin:imax], c='r', solid_capstyle='butt',
                 lw=2, alpha=alpha)
 
-    # Centre the image on the fixed anchor point, and ensure the axes are equal
+    # sistemo il piano cartesiano
     ax.set_xlim(-lunghezza1-lunghezza2-r, lunghezza1+lunghezza2+r)
     ax.set_ylim(-lunghezza1-lunghezza2-r, lunghezza1+lunghezza2+r)
     ax.set_aspect('equal', adjustable='box')
@@ -141,13 +141,11 @@ def make_plot(i):
     grafico.cla()
 
 
-# Make an image every di time points, corresponding to a frame rate of fps
-# frames per second.
-# Frame rate, s-1
+# disegno un immagine ogni di
 fps = 10
 di = int(1/fps/dt)
 fig, ax = grafico.subplots()
 
 for i in range(0, tempo.size, di):
     print(i // di, '/', tempo.size // di)
-    make_plot(i)
+    disegnaGrafico(i)
