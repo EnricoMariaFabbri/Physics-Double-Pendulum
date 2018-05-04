@@ -35,7 +35,7 @@ def Pendolo(cartella):
 
     contatore = 0
     while contatore != 1:
-        lunghezza1 = float(input('inserisci il primo filo in centimetri'))
+        lunghezza1 = float(input('inserisci la lunghezza del primo filo in metri'))
         if lunghezza1 < 0 or lunghezza1 > 10:
             print("La lughezza non puo essere negativa ne maggiore di 10")
         else:
@@ -44,7 +44,7 @@ def Pendolo(cartella):
 
     contatore1 = 0
     while contatore1 != 1:
-        lunghezza2 = float(input('inserisci il secondo filo in centimetri'))
+        lunghezza2 = float(input('inserisci la lunghezza del secondo filo in metri'))
         if lunghezza2 < 0 or lunghezza2 > 10:
             print("La lughezza non puo essere negativa ne maggiore di 10")
         else:
