@@ -2,32 +2,36 @@ import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as grafico
 from matplotlib.patches import Circle
+import cv2
+import os
 
 """˙z=m2gsinθ2cos(θ1−θ2)−m2sin(θ1−θ2)[l1z21cos(θ1−θ2)+l2z22]−(m1+m2)gsinθ1l1[m1+m2sin2(θ1−θ2)],
 z˙2=(m1+m2)[l1z21sin(θ1−θ2)−gsinθ2+gsinθ1cos(θ1−θ2)]+m2l2z22sin(θ1−θ2)cos(θ1−θ2)l2[m1+m2sin2(θ1−θ2)]"""
-cartella="frames/_img{:04d}.png"
 
-def PrimoPendolo(cartella):
+
+cartella="frames/img-{:04d}.png"
+
+def Pendolo(cartella):
 
     contatore3 = 0
     while contatore3 != 1:
-        teta1 = float(input('inserisci il primo angolo in gradi'))
-        if teta1 < 0:
-            print("inserire angolo positivo")
+        teta1 = float(input('inserisci l ampiezza del primo angolo in gradi'))
+        if teta1 < 0 or teta1 > 360:
+            print("inserire angolo positivo e minore di 360 gradi")
         else:
             contatore3 = 1
 
-    teta1 = (teta1* np.pi)/180
+    teta1 = (teta1* np.pi)/180.0
 
     contatore2 = 0
     while contatore2 != 1:
-        teta2 = float(input('inserisci il secondo angolo in gradi'))
-        if teta2 < 0:
-            print("inserire angolo positivo")
+        teta2 = float(input('inserisci l ampiezza del secondo angolo in gradi'))
+        if teta2 < 0 or teta2 > 360:
+            print("inserire angolo positivo e minore di 360 gradi")
         else:
             contatore2 = 1
 
-    teta2 = (teta2* np.pi)/180
+    teta2 = (teta2* np.pi)/180.0
 
     contatore = 0
     while contatore != 1:
@@ -83,7 +87,7 @@ def PrimoPendolo(cartella):
         return teta1primo, z1primo, teta2primo, z2primo
 
 
-    tmax, dt = 30, 0.01
+    tmax, dt = 20, 0.01
     tempo = np.arange(0, tmax+dt, dt)
 
 
@@ -154,8 +158,19 @@ def PrimoPendolo(cartella):
         disegnaGrafico(i)
 
 
-PrimoPendolo(cartella)
+Pendolo(cartella)
+def save():
+    os.system("ffmpeg -framerate 10 -i frames/img-%04d.png -c:v "
+              "libx264 -profile:v high -crf 20 -pix_fmt yuv420p primoPendolo.mp4")
 
-cartella1 = "frames1/_img{:04d}.png"
+save()
 
-PrimoPendolo(cartella1)
+cartella1 = "frames1/img-{:04d}.png"
+
+Pendolo(cartella1)
+
+def save1():
+    os.system("ffmpeg -framerate 10 -i frames/img-%04d.png -c:v "
+              "libx264 -profile:v high -crf 20 -pix_fmt yuv420p secondoPendolo.mp4")
+
+save1()
