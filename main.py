@@ -2,16 +2,22 @@ import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as grafico
 from matplotlib.patches import Circle
-import cv2
 import os
 
-"""˙z=m2gsinθ2cos(θ1−θ2)−m2sin(θ1−θ2)[l1z21cos(θ1−θ2)+l2z22]−(m1+m2)gsinθ1l1[m1+m2sin2(θ1−θ2)],
-z˙2=(m1+m2)[l1z21sin(θ1−θ2)−gsinθ2+gsinθ1cos(θ1−θ2)]+m2l2z22sin(θ1−θ2)cos(θ1−θ2)l2[m1+m2sin2(θ1−θ2)]"""
-
+#IMPORTANTE :  il programma viene eseguito due volte pero per notare bene la differenza tra i due pendoli è opportuno inserire un tempo
+#di esecuzione alto.
 
 cartella="frames/img-{:04d}.png"
 
 def Pendolo(cartella):
+
+    contatore6 = 0
+    while contatore6 != 1:
+        tmax = int(input('inserisci il tempo di esecuzione del moto in secondi'))
+        if tmax < 1 or tmax > 100:
+            print("inserire un tempo compreso tra 1 e 100")
+        else:
+            contatore6 = 1
 
     contatore3 = 0
     while contatore3 != 1:
@@ -21,7 +27,7 @@ def Pendolo(cartella):
         else:
             contatore3 = 1
 
-    teta1 = (teta1* np.pi)/180.0
+    teta1 = (teta1 * np.pi)/180.0
 
     contatore2 = 0
     while contatore2 != 1:
@@ -31,7 +37,7 @@ def Pendolo(cartella):
         else:
             contatore2 = 1
 
-    teta2 = (teta2* np.pi)/180.0
+    teta2 = (teta2 * np.pi)/180.0
 
     contatore = 0
     while contatore != 1:
@@ -74,6 +80,7 @@ def Pendolo(cartella):
     def EquazioneDelMoto(PosizioneSistemaAggiornata,tempo, lunghezza1, lunghezza2, massa1, massa2):
         teta1, z1, teta2, z2 = PosizioneSistemaAggiornata
 
+        # semplifico la mia equazione
         cosenoRipetuto= np.cos(teta1-teta2)
         senoRipetuto = np.sin(teta1 - teta2)
 
@@ -87,7 +94,7 @@ def Pendolo(cartella):
         return teta1primo, z1primo, teta2primo, z2primo
 
 
-    tmax, dt = 20, 0.01
+    dt = 0.01
     tempo = np.arange(0, tmax+dt, dt)
 
 
